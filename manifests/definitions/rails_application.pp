@@ -30,7 +30,8 @@ define rails::application($server_name = false, $rails_version = '2.3.5') {
 
   exec { "restart-$name":
     refreshonly => true,
-    command => "test -d /var/www/$name/current/tmp && touch /var/www/$name/current/tmp/restart.txt"
+    command => "touch /var/www/$name/current/tmp/restart.txt",
+    onlyif => "test -d /var/www/$name/current/tmp/"
   }
 
 }
