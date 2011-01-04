@@ -23,3 +23,10 @@ class ruby::gems {
 "
   }
 }
+
+class ruby::gem::nokogiri::dependencies {
+  include ruby::gems
+
+  package { [libxml2-dev, zlib1g-dev]: }  
+  package { libxslt1-dev: }  
+}
