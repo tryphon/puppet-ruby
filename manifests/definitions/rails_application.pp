@@ -1,4 +1,4 @@
-define rails::application($server_name = false, $rails_version = '2.3.5') {
+define rails::application($server_name = false, $rails_version = '2.3.5', $mongodb = false) {
   if $server_name {
     $site_name = regsubst($server_name, '\.', '_', 'G')
     apache2::site { $site_name:
@@ -26,8 +26,19 @@ define rails::application($server_name = false, $rails_version = '2.3.5') {
 
   file { 
     "/etc/$name": ensure => directory;
-    "/etc/$name/database.yml": source => ["puppet:///files/$name/database.yml.$fqdn", "puppet:///files/$name/database.yml"], notify => Exec["restart-$name"];
     "/etc/$name/production.rb": source => ["puppet:///files/$name/production.rb.$fqdn", "puppet:///files/$name/production.rb"], notify => Exec["restart-$name"];
+  }
+
+  if $mongodb {
+    file { "/etc/$name/mongoid.yml": 
+      source => ["puppet:///files/$name/mongoid.yml.$fqdn", "puppet:///files/$name/mongoid.yml"], 
+      notify => Exec["restart-$name"]
+    }
+  } else {
+    file { "/etc/$name/database.yml": 
+      source => ["puppet:///files/$name/database.yml.$fqdn", "puppet:///files/$name/database.yml"], 
+      notify => Exec["restart-$name"]
+    }
   }
 
   exec { "restart-$name":
