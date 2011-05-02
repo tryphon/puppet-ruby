@@ -24,8 +24,13 @@ define rails::application($server_name = false, $rails_version = '2.3.5', $mongo
     force => true
   }
 
-  file { 
-    "/etc/$name": ensure => directory;
+  if ! defined(File["/etc/$name"]) {
+    file { "/etc/$name": 
+      ensure => directory
+    } 
+  }
+
+  file {
     "/etc/$name/production.rb": source => ["puppet:///files/$name/production.rb.$fqdn", "puppet:///files/$name/production.rb"], notify => Exec["restart-$name"];
   }
 
