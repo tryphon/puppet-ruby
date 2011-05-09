@@ -33,6 +33,7 @@ class ruby::gem::nokogiri::dependencies {
 
 class ruby::gem::sqlite3::dependencies {
   include ruby::gems
+  include apt::backports
 
   package { libsqlite3-dev:
     require => Apt::Preferences[libsqlite3-dev]
