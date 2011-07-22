@@ -1,3 +1,3 @@
 class ruby::capistrano {
-  ruby::gem { capistrano: }
+  ruby::gem { [capistrano, capistrano-ext]: }
 }
