@@ -1,4 +1,4 @@
-define rails::application($server_name = false, $rails_version = '2.3.5', $mongodb = false) {
+define rails::application($server_name = false, $rails_version = '2.3.5', $mongodb = false, $database = nil) {
   if $server_name {
     $site_name = regsubst($server_name, '\.', '_', 'G')
     apache2::site { $site_name:
@@ -24,8 +24,13 @@ define rails::application($server_name = false, $rails_version = '2.3.5', $mongo
     force => true
   }
 
-  file { 
-    "/etc/$name": ensure => directory;
+  if ! defined(File["/etc/$name"]) {
+    file { "/etc/$name": 
+      ensure => directory
+    } 
+  }
+
+  file {
     "/etc/$name/production.rb": source => ["puppet:///files/$name/production.rb.$fqdn", "puppet:///files/$name/production.rb"], notify => Exec["restart-$name"];
   }
 
@@ -34,7 +39,15 @@ define rails::application($server_name = false, $rails_version = '2.3.5', $mongo
       source => ["puppet:///files/$name/mongoid.yml.$fqdn", "puppet:///files/$name/mongoid.yml"], 
       notify => Exec["restart-$name"]
     }
+  } 
+
+  if $database == nil {
+    $real_database=!$mongodb
   } else {
+    $real_database=$database
+  }
+
+  if $real_database {
     file { "/etc/$name/database.yml": 
       source => ["puppet:///files/$name/database.yml.$fqdn", "puppet:///files/$name/database.yml"], 
       notify => Exec["restart-$name"]
