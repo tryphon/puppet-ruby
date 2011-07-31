@@ -37,9 +37,7 @@ class ruby::gem::nokogiri::dependencies {
 class ruby::gem::sqlite3::dependencies {
   include ruby::gems
 
-  package { libsqlite3-dev:
-    require => Apt::Preferences[libsqlite3-dev]
-  }
+  package { libsqlite3-dev: }
 
   if $debian::lenny {
     include apt::backports
@@ -47,7 +45,8 @@ class ruby::gem::sqlite3::dependencies {
       package => libsqlite3-dev,
       pin => "release a=lenny-backports",
       priority => 999,
-      require => Apt::Preferences[libsqlite3]
+      require => Apt::Preferences[libsqlite3],
+      before => Package[libsqlite3-dev]
     }
     apt::preferences { libsqlite3:
       package => libsqlite3-0,
