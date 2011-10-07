@@ -27,6 +27,10 @@ class ruby::gems {
   }
 }
 
+class ruby::gem::fog::dependencies {
+  include ruby::gem::nokogiri::dependencies
+}
+
 class ruby::gem::nokogiri::dependencies {
   include ruby::gems
 
