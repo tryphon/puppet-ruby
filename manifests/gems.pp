@@ -61,5 +61,5 @@ class ruby::gem::sqlite3::dependencies {
 }
 
 class ruby::gem::rtaglib::dependencies {
-  package { libtagc0-dev: }
+  package { [libtagc0-dev, libtag1-dev]: }
 }
