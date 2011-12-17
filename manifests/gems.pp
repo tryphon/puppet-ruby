@@ -63,3 +63,7 @@ class ruby::gem::sqlite3::dependencies {
 class ruby::gem::rtaglib::dependencies {
   package { [libtagc0-dev, libtag1-dev]: }
 }
+
+class ruby::gem::proj4rb::dependencies {
+  package { libproj-dev: }
+}

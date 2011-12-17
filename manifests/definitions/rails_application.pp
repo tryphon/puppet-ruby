@@ -1,4 +1,4 @@
-define rails::application($server_name = false, $rails_version = '2.3.5', $mongodb = false, $database = nil) {
+define rails::application($server_name = false, $rails_version = '2.3.5', $mongodb = false, $database = nil, $environment = "production") {
   if $server_name {
     $site_name = regsubst($server_name, '\.', '_', 'G')
     apache2::site { $site_name:
@@ -30,13 +30,14 @@ define rails::application($server_name = false, $rails_version = '2.3.5', $mongo
     } 
   }
 
-  file {
-    "/etc/$name/production.rb": source => ["puppet:///files/$name/production.rb.$fqdn", "puppet:///files/$name/production.rb"], notify => Exec["restart-$name"];
+  file { "/etc/$name/$environment.rb": 
+    source => ["puppet:///files/$name/$environment.rb.$fqdn", "puppet:///files/$name/$environment.rb"], 
+    notify => Exec["restart-$name"]
   }
 
   if $mongodb {
     file { "/etc/$name/mongoid.yml": 
-      source => ["puppet:///files/$name/mongoid.yml.$fqdn", "puppet:///files/$name/mongoid.yml"], 
+      source => ["puppet:///files/$name/mongoid.yml.$fqdn", "puppet:///files/$name/mongoid.yml.$environment", "puppet:///files/$name/mongoid.yml"], 
       notify => Exec["restart-$name"]
     }
   } 
@@ -49,7 +50,7 @@ define rails::application($server_name = false, $rails_version = '2.3.5', $mongo
 
   if $real_database {
     file { "/etc/$name/database.yml": 
-      source => ["puppet:///files/$name/database.yml.$fqdn", "puppet:///files/$name/database.yml"], 
+      source => ["puppet:///files/$name/database.yml.$fqdn", "puppet:///files/$name/database.yml.$environment", "puppet:///files/$name/database.yml"], 
       notify => Exec["restart-$name"]
     }
   }
