@@ -4,5 +4,5 @@ class ruby::onrails {
   include ruby::rake
   include ruby::irb
   include ruby::syslog
-  include git::common
+  include ruby::capistrano::target
 }
