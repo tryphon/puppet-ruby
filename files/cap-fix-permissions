@@ -2,7 +2,9 @@
 
 base_dir=$1
 
-find $base_dir/releases/ $base_dir/shared/bundle -type d -print0 | xargs -0 sudo chmod g+ws
-find $base_dir/releases/ $base_dir/shared/bundle -print0 | xargs -0 sudo chmod g+w 
+directories="$base_dir/releases/ $base_dir/shared/bundle $base_dir/shared/assets"
+
+find $directories -type d -print0 | xargs -0 sudo chmod g+ws
+find $directories -print0 | xargs -0 sudo chmod g+w 
 
 exit 0
