@@ -2,9 +2,11 @@
 
 base_dir=$1
 
-directories="$base_dir/releases/ $base_dir/shared/bundle $base_dir/shared/assets"
+directories="$base_dir/releases/ $base_dir/shared/bundle $base_dir/shared/assets $base_dir/shared/cached-copy"
 
 find $directories -type d -print0 | xargs -0 sudo chmod g+ws
 find $directories -print0 | xargs -0 sudo chmod g+w 
+
+sudo chgrp -R src $directories
 
 exit 0
