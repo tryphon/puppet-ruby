@@ -71,3 +71,14 @@ class ruby::gem::proj4rb::dependencies {
 class ruby::gem::rmagick::dependencies {
   package { libmagickwand-dev: }
 }
+
+class ruby::gem::mysql::dependencies {
+  include ruby::gems
+  include mysql::client  
+
+  if $debian::lenny {
+    package { libmysqlclient15-dev: alias => libmysqlclient-dev }
+  } else {
+    package { libmysqlclient-dev: }
+  }
+}
