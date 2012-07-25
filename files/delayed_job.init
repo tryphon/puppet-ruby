@@ -16,10 +16,13 @@ DAEMON=/var/www/$NAME/current/script/delayed_job
 DAEMON_OPTS=""
 DAEMON_USER="www-data"
 DESC="$NAME background job"
+RAILS_ENV="production"
 
 test -x $DAEMON || exit 0
 
 [ -r /etc/default/$NAME ] && . /etc/default/$NAME
+
+export RAILS_ENV
 
 . /lib/lsb/init-functions
 
