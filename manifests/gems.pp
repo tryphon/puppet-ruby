@@ -82,3 +82,7 @@ class ruby::gem::mysql::dependencies {
     package { libmysqlclient-dev: }
   }
 }
+
+class ruby::gem::bzip2::dependencies {
+  package { libbz2-dev: }
+}
