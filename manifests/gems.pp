@@ -87,3 +87,6 @@ class ruby::gem::mahoro::dependencies {
   package { libmagic-dev: }
 }
 
+class ruby::gem::bzip2::dependencies {
+  package { libbz2-dev: }
+}

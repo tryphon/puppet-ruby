@@ -1,0 +1,34 @@
+#! /bin/sh
+
+application=`basename $0`
+
+### BEGIN INIT INFO
+# Provides:
+# Required-Start:    $network $named $remote_fs $syslog postgresql
+# Required-Stop:     $network $named $remote_fs $syslog postgresql
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+### END INIT INFO
+
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+NAME="$application"
+APPLICATION_DIR=/var/www/$NAME/current
+DAEMON=$APPLICATION_DIR/script/delayed_job
+DAEMON_OPTS=""
+DAEMON_USER="www-data"
+DESC="$NAME background job"
+RAILS_ENV="production"
+
+test -x $DAEMON || exit 0
+
+[ -r /etc/default/$NAME ] && . /etc/default/$NAME
+
+export RAILS_ENV
+
+cd $APPLICATION_DIR
+
+touch log/delayed_job.log
+chown $DAEMON_USER tmp/pids log/delayed_job.log
+
+su $DAEMON_USER -c "bundle exec script/delayed_job $1"
+exit $?
