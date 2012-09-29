@@ -82,3 +82,8 @@ class ruby::gem::mysql::dependencies {
     package { libmysqlclient-dev: }
   }
 }
+
+class ruby::gem::mahoro::dependencies {
+  package { libmagic-dev: }
+}
+
