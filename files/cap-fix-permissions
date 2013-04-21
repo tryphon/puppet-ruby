@@ -7,6 +7,6 @@ directories="$base_dir/releases/ $base_dir/shared/bundle $base_dir/shared/assets
 find $directories -type d -print0 | xargs -0 sudo chmod g+ws
 find $directories -print0 | xargs -0 sudo chmod g+w 
 
-sudo chgrp -R src $directories
+chgrp -R src $directories
 
 exit 0
