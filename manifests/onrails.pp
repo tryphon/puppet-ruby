@@ -5,4 +5,9 @@ class ruby::onrails {
   include ruby::irb
   include ruby::syslog
   include ruby::capistrano::target
+
+  file { "/usr/local/bin/rails-console":
+    source => "puppet:///ruby/rails-console",
+    mode => 755
+  }
 }

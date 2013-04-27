@@ -1,0 +1,10 @@
+#!/bin/bash
+
+directory="/var/www/$1/current"
+cd $directory
+
+if [ -f "script/console" ]; then
+    sudo -u www-data bundle exec ./script/console production
+else
+    sudo -u www-data bundle exec rails console production
+fi
