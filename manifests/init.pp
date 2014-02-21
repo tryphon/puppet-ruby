@@ -6,10 +6,8 @@ class ruby193 {
   package { "ruby1.9.1":
     require => Apt::Sources_list["bearstech"]
   }
-  file { "/var/lib/gems/1.9.1/bin":
-    ensure => directory,
-    require => Package["ruby1.9.1"]
-  }
+
+  # Gems binaries should go to /var/lib/gems/1.9.1/bin
 }
 
 class ruby20 {
@@ -17,10 +15,6 @@ class ruby20 {
 
   package { "ruby2.0":
     require => Apt::Sources_list["bearstech"]
-  }
-  file { "/var/lib/gems/2.0.0/bin":
-    ensure => directory,
-    require => Package["ruby2.0"]
   }
   # Small patch to install gem binaries in /var/lib/gems/2.0.0/bin
   #
