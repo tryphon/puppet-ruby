@@ -1,7 +1,7 @@
 class ruby::gems {
   include ruby::dev
 
-  package { rubygems: 
+  package { rubygems:
     ensure => latest
   }
 
@@ -11,20 +11,31 @@ class ruby::gems {
       require => [Apt::Sources_list[tryphon], Apt::Preferences[rubygems]]
     }
     apt::preferences { rubygems:
-      package => rubygems, 
+      package => rubygems,
       pin => "release a=lenny-backports",
       priority => 999
     }
     apt::preferences { "rubygems18":
-      package => "rubygems1.8", 
+      package => "rubygems1.8",
       pin => "release a=lenny-backports",
       priority => 999
     }
   }
+  include ruby::gemrc
+}
 
+class ruby::gemrc {
   file { "/etc/gemrc":
     content => "gem: --no-rdoc --no-ri\n"
   }
+}
+
+class ruby::gems::193 {
+  include ruby::gemrc
+}
+
+class ruby::gems::20 {
+  include ruby::gemrc
 }
 
 class ruby::gem::fog::dependencies {
@@ -32,15 +43,11 @@ class ruby::gem::fog::dependencies {
 }
 
 class ruby::gem::nokogiri::dependencies {
-  include ruby::gems
-
-  package { [libxml2-dev, zlib1g-dev]: }  
-  package { libxslt1-dev: }  
+  package { [libxml2-dev, zlib1g-dev]: }
+  package { libxslt1-dev: }
 }
 
 class ruby::gem::sqlite3::dependencies {
-  include ruby::gems
-
   package { libsqlite3-dev: }
 
   if $debian::lenny {
@@ -73,8 +80,7 @@ class ruby::gem::rmagick::dependencies {
 }
 
 class ruby::gem::mysql::dependencies {
-  include ruby::gems
-  include mysql::client  
+  include mysql::client
 
   if $debian::lenny {
     package { libmysqlclient15-dev: alias => libmysqlclient-dev }
