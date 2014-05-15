@@ -96,3 +96,7 @@ class ruby::gem::mahoro::dependencies {
 class ruby::gem::bzip2::dependencies {
   package { libbz2-dev: }
 }
+
+class ruby::gem::taglib_ruby::dependencies {
+  package { 'libtag1-dev': }
+}
