@@ -13,7 +13,7 @@ define ruby::gem193($ensure = 'present') {
   exec { "ruby-gem193-install-$name":
     command => "gem1.9.1 install $name",
     unless => "gem1.9.1 list $name | grep '^$name '",
-    require => [Package["ruby1.9.1"],Package["ruby1.9.1-dev"], Package[build-essential]]
+    require => [Package["ruby1.9.1"],Package["ruby1.9.1-dev"], Package[build-essential], File["/usr/lib/ruby/1.9.1/rubygems/defaults.rb"]]
   }
 }
 
