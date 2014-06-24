@@ -7,11 +7,12 @@ define rails::application($server_name = false, $rails_version = '2.3.5', $mongo
   }
 
   if $rails_version {
-    # a simple ruby::gem/package doesn't support several versions of the same gem
-    exec { "gem-install-rails-$rails_version-for-$name":
-      command => "gem install --version $rails_version rails",
-      unless => "gem list rails | grep '^rails ' | grep '[( ]$rails_version[,)]'"
-    }
+    notice("rails_version is no longer supported. Use bundler ...")
+    # # a simple ruby::gem/package doesn't support several versions of the same gem
+    # exec { "gem-install-rails-$rails_version-for-$name":
+    #   command => "gem install --version $rails_version rails",
+    #   unless => "gem list rails | grep '^rails ' | grep '[( ]$rails_version[,)]'"
+    # }
   }
 
   file { ["/var/www/$name", "/var/www/$name/shared"]:
@@ -25,22 +26,22 @@ define rails::application($server_name = false, $rails_version = '2.3.5', $mongo
   }
 
   if ! defined(File["/etc/$name"]) {
-    file { "/etc/$name": 
+    file { "/etc/$name":
       ensure => directory
-    } 
+    }
   }
 
-  file { "/etc/$name/$environment.rb": 
-    source => ["puppet:///files/$name/$environment.rb.$fqdn", "puppet:///files/$name/$environment.rb"], 
+  file { "/etc/$name/$environment.rb":
+    source => ["puppet:///files/$name/$environment.rb.$fqdn", "puppet:///files/$name/$environment.rb"],
     notify => Exec["restart-$name"]
   }
 
   if $mongodb {
-    file { "/etc/$name/mongoid.yml": 
-      source => ["puppet:///files/$name/mongoid.yml.$fqdn", "puppet:///files/$name/mongoid.yml.$environment", "puppet:///files/$name/mongoid.yml"], 
+    file { "/etc/$name/mongoid.yml":
+      source => ["puppet:///files/$name/mongoid.yml.$fqdn", "puppet:///files/$name/mongoid.yml.$environment", "puppet:///files/$name/mongoid.yml"],
       notify => Exec["restart-$name"]
     }
-  } 
+  }
 
   if $database == nil {
     $real_database=!$mongodb
@@ -49,8 +50,8 @@ define rails::application($server_name = false, $rails_version = '2.3.5', $mongo
   }
 
   if $real_database {
-    file { "/etc/$name/database.yml": 
-      source => ["puppet:///files/$name/database.yml.$fqdn", "puppet:///files/$name/database.yml.$environment", "puppet:///files/$name/database.yml"], 
+    file { "/etc/$name/database.yml":
+      source => ["puppet:///files/$name/database.yml.$fqdn", "puppet:///files/$name/database.yml.$environment", "puppet:///files/$name/database.yml"],
       notify => Exec["restart-$name"]
     }
   }
