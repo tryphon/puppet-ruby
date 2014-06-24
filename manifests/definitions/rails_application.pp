@@ -1,4 +1,4 @@
-define rails::application($server_name = false, $rails_version = '2.3.5', $mongodb = false, $database = nil, $environment = "production") {
+define rails::application($server_name = false, $rails_version = '2.3.5', $mongodb = false, $database = nil, $environment = "production", $ruby_version = false) {
   if $server_name {
     $site_name = regsubst($server_name, '\.', '_', 'G')
     apache2::site { $site_name:
