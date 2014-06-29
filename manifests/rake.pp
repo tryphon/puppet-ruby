@@ -6,7 +6,7 @@ class ruby::rake {
   #   ensure => "/var/lib/gems/1.8/bin/rake"
   # }
 
-  define application($server_name = false, $environment = "production") {
+  define application($server_name = false, $environment = "production", $ruby_version = false) {
     if $server_name {
       $site_name = regsubst($server_name, '\.', '_', 'G')
       apache2::site { $site_name:
