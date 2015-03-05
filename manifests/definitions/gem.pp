@@ -8,11 +8,15 @@ define ruby::gem($ensure = 'present') {
 }
 
 define ruby::gem193($ensure = 'present') {
+  $version = $ensure ? {
+    'present' => '.*',
+    default => $ensure
+  }
   include ruby::gems::193
   # remove me if package { provider => gem } can support gem2.0
   exec { "ruby-gem193-install-$name":
     command => "gem1.9.1 install $name",
-    unless => "gem1.9.1 list $name | grep '^$name '",
+    unless => "gem1.9.1 list $name | grep '^$name ($version)'",
     require => [Package["ruby1.9.1"],Package["ruby1.9.1-dev"], Package[build-essential], File["/usr/lib/ruby/1.9.1/rubygems/defaults.rb"]]
   }
 }
