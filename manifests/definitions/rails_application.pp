@@ -1,4 +1,4 @@
-define rails::application($server_name = false, $rails_version = '2.3.5', $mongodb = false, $database = nil, $environment = "production", $ruby_version = false, $newrelic = false) {
+define rails::application($server_name = false, $rails_version = '2.3.5', $mongodb = false, $database = nil, $environment = "production", $ruby_version = false, $newrelic = false, $sidekiq = false) {
   if $server_name {
     $site_name = regsubst($server_name, '\.', '_', 'G')
     apache2::site { $site_name:
@@ -59,7 +59,22 @@ define rails::application($server_name = false, $rails_version = '2.3.5', $mongo
   if $newrelic {
     file { "/etc/$name/newrelic.yml":
       source => ["puppet:///files/$name/newrelic.yml.$fqdn", "puppet:///files/$name/newrelic.yml.$environment", "puppet:///files/$name/newrelic.yml"],
+      mode => 644,
       notify => Exec["restart-$name"]
+    }
+  }
+
+  if $sidekiq {
+    file { "/etc/init.d/sidekiq-$name":
+      source => "puppet:///ruby/sidekiq/sidekiq.initd",
+      mode => 755,
+      require => File['/usr/local/bin/sidekiq-start']
+    }
+
+    service { "sidekiq-$name":
+      ensure => running,
+      hasstatus => true,
+      require => File["/etc/init.d/sidekiq-$name"]
     }
   }
 

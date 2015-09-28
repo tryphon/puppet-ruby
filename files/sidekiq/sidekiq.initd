@@ -1,0 +1,74 @@
+#! /bin/sh
+### BEGIN INIT INFO
+# Provides:          sidekiq
+# Required-Start:    $network $named $remote_fs $syslog
+# Required-Stop:     $network $named $remote_fs $syslog
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+### END INIT INFO
+
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+DAEMON=/usr/local/bin/sidekiq-start
+
+APPLICATION=`basename $0 | sed 's/sidekiq-//'`
+DIRECTORY="/var/www/$APPLICATION/current"
+NAME="sidekiq-$APPLICATION"
+PID_FILE="/var/run/$NAME.pid"
+
+DAEMON_OPTS="$APPLICATION $DIRECTORY $PID_FILE"
+DAEMON_USER="www-data"
+
+DESC="Sidekiq job for $APPLICATION"
+
+test -x $DAEMON || exit 0
+
+[ -r /etc/default/$NAME ] && . /etc/default/$NAME
+
+test -d $DIRECTORY || exit 1
+
+. /lib/lsb/init-functions
+
+start_daemon() {
+    if [ -n "$DAEMON_USER" ] ; then
+        touch $PID_FILE && chown $DAEMON_USER $PID_FILE
+        start-stop-daemon --start --quiet --pidfile $PID_FILE --chuid $DAEMON_USER \
+	          --startas $DAEMON --background -- $DAEMON_OPTS
+    else
+	      echo ""
+	      echo "$NAME not configured to start, please edit /etc/default/$NAME enable"
+    fi
+}
+
+stop_daemon() {
+	  start-stop-daemon --stop --quiet --pidfile $PID_FILE
+}
+
+case "$1" in
+    start)
+	      log_begin_msg "Starting $DESC"
+	      start_daemon
+	      log_end_msg 0
+	      ;;
+    stop)
+	      log_begin_msg "Stopping $DESC"
+	      stop_daemon
+	      log_end_msg 0
+	      ;;
+    restart|force-reload)
+	      log_begin_msg "Restarting $DESC"
+	      stop_daemon
+	      sleep 1
+	      start_daemon
+	      log_end_msg 0
+	      ;;
+    status)
+	      start-stop-daemon --status --pidfile $PID_FILE
+        exit $?
+	      ;;
+    *)
+	      echo "Usage: $0 {start|stop|restart|force-reload}" >&2
+	      exit 1
+	      ;;
+esac
+
+exit 0

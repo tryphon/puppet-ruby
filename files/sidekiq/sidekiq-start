@@ -1,0 +1,9 @@
+#!/bin/sh -e
+# Simple wrapper for /etc/init.d/sidekiq-* scripts
+
+application=$1
+directory=$2
+pid_file=$3
+
+cd $directory
+./script/bundle exec sidekiq -e production -P $pid_file 2>&1 | logger -t "sidekiq/$application"
