@@ -5,6 +5,7 @@ class ruby::onrails {
   # include ruby::irb
   # include ruby::syslog
   include ruby::capistrano::target
+  include ruby::whenever
 
   file { "/usr/local/bin/rails-console":
     source => "puppet:///ruby/rails-console",
