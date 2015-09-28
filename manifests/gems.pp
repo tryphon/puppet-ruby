@@ -38,6 +38,14 @@ class ruby::gems::20 {
   include ruby::gemrc
 }
 
+class ruby::gems::21 {
+  include ruby::gemrc
+}
+
+class ruby::gems::22 {
+  include ruby::gemrc
+}
+
 class ruby::gem::fog::dependencies {
   include ruby::gem::nokogiri::dependencies
 }

@@ -18,3 +18,13 @@ class ruby::bundler::20 {
   include ruby::gems::20
   ruby::gem20 { bundler: ensure => latest }
 }
+
+class ruby::bundler::21 {
+  include ruby::gems::21
+  ruby::gem21 { bundler: ensure => latest }
+}
+
+class ruby::bundler::22 {
+  include ruby::gems::22
+  ruby::gem22 { bundler: ensure => latest }
+}
