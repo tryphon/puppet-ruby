@@ -1,4 +1,4 @@
 #!/bin/sh -e
 # Simple wrapper for whenever
 
-./script/bundle exec whenever $@
+./script/bundle exec whenever "$@"
