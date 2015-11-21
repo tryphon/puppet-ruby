@@ -109,3 +109,7 @@ class ruby::gem::bzip2::dependencies {
 class ruby::gem::taglib_ruby::dependencies {
   package { 'libtag1-dev': }
 }
+
+class ruby::gem::postgresql::dependencies {
+  package { 'libpq-dev': }
+}
