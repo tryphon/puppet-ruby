@@ -1,4 +1,4 @@
-define rails::application($server_name = false, $rails_version = '2.3.5', $mongodb = false, $database = nil, $environment = "production", $ruby_version = false, $newrelic = false, $sidekiq = false) {
+define rails::application($server_name = false, $rails_version = '2.3.5', $mongodb = false, $database = nil, $environment = "production", $ruby_version = false, $newrelic = false, $sidekiq = false, $secrets = false) {
   if $server_name {
     $site_name = regsubst($server_name, '\.', '_', 'G')
     apache2::site { $site_name:
@@ -39,6 +39,13 @@ define rails::application($server_name = false, $rails_version = '2.3.5', $mongo
   if $mongodb {
     file { "/etc/$name/mongoid.yml":
       source => ["puppet:///files/$name/mongoid.yml.$fqdn", "puppet:///files/$name/mongoid.yml.$environment", "puppet:///files/$name/mongoid.yml"],
+      notify => Exec["restart-$name"]
+    }
+  }
+
+  if $secrets {
+    file { "/etc/$name/secrets.yml":
+      source => ["puppet:///files/$name/secrets.yml.$fqdn", "puppet:///files/$name/secrets.yml.$environment", "puppet:///files/$name/secrets.yml"],
       notify => Exec["restart-$name"]
     }
   }
