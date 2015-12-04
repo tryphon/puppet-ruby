@@ -31,9 +31,18 @@ define rails::application($server_name = false, $rails_version = '2.3.5', $mongo
     }
   }
 
-  file { "/etc/$name/$environment.rb":
+  file { "/etc/$name/environments":
+    ensure => directory
+  }
+
+  file { "/etc/$name/environments/$environment.rb":
     source => ["puppet:///files/$name/$environment.rb.$fqdn", "puppet:///files/$name/$environment.rb"],
     notify => Exec["restart-$name"]
+  }
+
+  file { "/etc/$name/$environment.rb":
+    ensure => link,
+    target => "/etc/$name/environments/$environment.rb"
   }
 
   if $mongodb {
