@@ -113,3 +113,7 @@ class ruby::gem::taglib_ruby::dependencies {
 class ruby::gem::postgresql::dependencies {
   package { 'libpq-dev': }
 }
+
+class ruby::gem::capybara-webkit {
+  package { 'libqtwebkit-dev': }
+}
