@@ -9,4 +9,8 @@ find $directories -print0 | xargs -0 chmod g+w
 
 chgrp -R src $directories
 
+files="$base_dir/revisions.log"
+chgrp src $files
+chmod g+w $files
+
 exit 0
