@@ -15,7 +15,7 @@ define rails::application($server_name = false, $rails_version = '2.3.5', $mongo
     # }
   }
 
-  file { ["/var/www/$name", "/var/www/$name/shared"]:
+  file { ["/var/www/$name", "/var/www/$name/shared", "/var/www/$name/shared/public"]:
     ensure => directory,
     mode => 2775,
     group => src
