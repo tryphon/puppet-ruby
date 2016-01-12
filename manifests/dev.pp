@@ -1,6 +1,6 @@
 class ruby::dev {
   include ruby193
-  include bearstech::apt
+  include apt::bearstech
   include debian::build-essential
 
   package { "ruby1.9.1-dev":
@@ -11,7 +11,7 @@ class ruby::dev {
 
 class ruby::dev::20 {
   include ruby20
-  include bearstech::apt
+  include apt::bearstech
   include debian::build-essential
 
   package { "ruby2.0-dev":
@@ -21,7 +21,7 @@ class ruby::dev::20 {
 
 class ruby::dev::21 {
   include ruby21
-  include bearstech::apt
+  include apt::bearstech
   include debian::build-essential
 
   package { "ruby2.1-dev":
@@ -31,7 +31,7 @@ class ruby::dev::21 {
 
 class ruby::dev::22 {
   include ruby22
-  include bearstech::apt
+  include apt::bearstech
   include debian::build-essential
 
   package { "ruby2.2-dev":

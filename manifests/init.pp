@@ -1,7 +1,7 @@
 import "definitions/*.pp"
 
 class ruby193 {
-  include bearstech::apt
+  include apt::bearstech
 
   package { "ruby1.9.1":
     require => Apt::Sources_list["bearstech"]
@@ -19,7 +19,7 @@ class ruby193 {
 }
 
 class ruby20 {
-  include bearstech::apt
+  include apt::bearstech
 
   package { "ruby2.0":
     require => Apt::Sources_list["bearstech"],
@@ -34,7 +34,7 @@ class ruby20 {
 }
 
 class ruby21 {
-  include bearstech::apt
+  include apt::bearstech
 
   package { "ruby2.1":
     require => Apt::Sources_list["bearstech"],
@@ -49,7 +49,7 @@ class ruby21 {
 }
 
 class ruby22 {
-  include bearstech::apt
+  include apt::bearstech
 
   package { "ruby2.2":
     require => Apt::Sources_list["bearstech"],
