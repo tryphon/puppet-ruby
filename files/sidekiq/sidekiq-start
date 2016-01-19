@@ -4,6 +4,11 @@
 application=$1
 directory=$2
 pid_file=$3
+environment=$4
 
 cd $directory
-./script/bundle exec sidekiq -e production -P $pid_file 2>&1 | logger -t "sidekiq/$application"
+
+# Find bundle in application bin or script directory (which should select the perfect ruby version)
+export PATH=$PWD/bin:$PWD/script:$PATH
+
+bundle exec sidekiq -e $environment -P $pid_file 2>&1 | logger -t "sidekiq/$application"

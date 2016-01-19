@@ -92,6 +92,12 @@ define rails::application($server_name = false, $rails_version = '2.3.5', $mongo
       hasstatus => true,
       require => File["/etc/init.d/sidekiq-$name"]
     }
+
+    if $environment != "production" {
+      file { "/etc/default/sidekiq-$name":
+        content => "RAILS_ENV=$environment\n"
+      }
+    }
   }
 
   exec { "restart-$name":

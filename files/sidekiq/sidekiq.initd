@@ -14,8 +14,8 @@ APPLICATION=`basename $0 | sed 's/sidekiq-//'`
 DIRECTORY="/var/www/$APPLICATION/current"
 NAME="sidekiq-$APPLICATION"
 PID_FILE="/var/run/$NAME.pid"
+RAILS_ENV="production"
 
-DAEMON_OPTS="$APPLICATION $DIRECTORY $PID_FILE"
 DAEMON_USER="www-data"
 
 DESC="Sidekiq job for $APPLICATION"
@@ -23,6 +23,7 @@ DESC="Sidekiq job for $APPLICATION"
 test -x $DAEMON || exit 0
 
 [ -r /etc/default/$NAME ] && . /etc/default/$NAME
+DAEMON_OPTS="$APPLICATION $DIRECTORY $PID_FILE $RAILS_ENV"
 
 test -d $DIRECTORY || exit 1
 
