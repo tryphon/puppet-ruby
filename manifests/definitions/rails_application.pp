@@ -1,8 +1,15 @@
-define rails::application($server_name = false, $rails_version = '2.3.5', $mongodb = false, $database = nil, $environment = "production", $ruby_version = false, $newrelic = false, $sidekiq = false, $secrets = false) {
+define rails::application($server_name = false, $rails_version = '2.3.5', $mongodb = false, $database = nil, $environment = "production", $ruby_version = false, $newrelic = false, $sidekiq = false, $secrets = false, $backend = 'apache2') {
   if $server_name {
     $site_name = regsubst($server_name, '\.', '_', 'G')
-    apache2::site { $site_name:
-      content => template("ruby/rails/apache.conf")
+    case $backend {
+      'apache2': {
+        apache2::site { $site_name:
+          content => template("ruby/rails/apache.conf")
+        }}
+      'nginx': {
+        nginx::site { $site_name:
+          content => template("ruby/rails/nginx.conf")
+        }}
     }
   }
 

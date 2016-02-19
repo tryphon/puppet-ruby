@@ -1,5 +1,8 @@
-class ruby::onrails {
-  include apache2::passenger
+class ruby::onrails($backend = "apache2") {
+  case $backend {
+    'apache2': { include apache2::passenger }
+    'nginx'  : { include nginx::passenger }
+  }
   # include ruby::gems
   # include ruby::rake
   # include ruby::irb
