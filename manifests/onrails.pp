@@ -1,4 +1,4 @@
-class ruby::onrails($backend = "apache2") {
+class ruby::onrails($backend = 'apache2') {
   case $backend {
     'apache2': { include apache2::passenger }
     'nginx'  : { include nginx::passenger }
@@ -10,8 +10,8 @@ class ruby::onrails($backend = "apache2") {
   include ruby::capistrano::target
   include ruby::whenever
 
-  file { "/usr/local/bin/rails-console":
-    source => "puppet:///ruby/rails-console",
-    mode => 755
+  file { '/usr/local/bin/rails-console':
+    source => 'puppet:///ruby/rails-console',
+    mode   => 0755
   }
 }
