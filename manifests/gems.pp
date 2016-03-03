@@ -84,6 +84,10 @@ class ruby::gem::proj4rb::dependencies {
   package { libproj-dev: }
 }
 
+class ruby::gem::ffi-proj4::dependencies {
+  package { 'libproj-dev': }
+}
+
 class ruby::gem::rmagick::dependencies {
   package { libmagickwand-dev: }
 }
