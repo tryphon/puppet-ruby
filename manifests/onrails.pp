@@ -14,4 +14,8 @@ class ruby::onrails($backend = 'apache2') {
     source => 'puppet:///ruby/rails-console',
     mode   => 0755
   }
+
+  sudo::user_line { "passenger-config":
+    line => "%src	ALL=NOPASSWD: /usr/bin/env passenger-config restart-app /var/www/[a-zA-Z0-9-_]*"
+  }
 }
