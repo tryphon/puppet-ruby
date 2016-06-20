@@ -89,7 +89,7 @@ define rails::application($server_name = false, $rails_version = '2.3.5', $mongo
 
   if $sidekiq {
     file { "/etc/init.d/sidekiq-$name":
-      source => "puppet:///ruby/sidekiq/sidekiq.initd",
+      source => "puppet:///modules/ruby/sidekiq/sidekiq.initd",
       mode => 755,
       require => File['/usr/local/bin/sidekiq-start']
     }

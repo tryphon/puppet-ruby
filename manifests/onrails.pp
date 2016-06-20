@@ -10,9 +10,9 @@ class ruby::onrails($backend = 'apache2') {
   include ruby::capistrano::target
   include ruby::whenever
 
-  file { '/usr/local/bin/rails-console':
-    source => 'puppet:///ruby/rails-console',
-    mode   => 0755
+  file { "/usr/local/bin/rails-console":
+    source => "puppet:///modules/ruby/rails-console",
+    mode => 0755
   }
 
   sudo::user_line { "passenger-config":

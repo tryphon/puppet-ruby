@@ -1,11 +1,11 @@
 class ruby::sidekiq {
   file { "/usr/local/bin/sidekiq-start":
-    source => "puppet:///ruby/sidekiq/sidekiq-start",
+    source => "puppet:///modules/ruby/sidekiq/sidekiq-start",
     mode => 755
   }
 
   file { "/usr/local/sbin/sidekiq-touch":
-    source => "puppet:///ruby/sidekiq/sidekiq-touch",
+    source => "puppet:///modules/ruby/sidekiq/sidekiq-touch",
     mode => 755
   }
   sudo::user_line { 'sidekiq-touch':

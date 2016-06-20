@@ -3,7 +3,7 @@ class ruby::capistrano::target {
   include git::common
 
   file { "/usr/local/sbin/cap-fix-permissions":
-    source => "puppet:///ruby/cap-fix-permissions",
+    source => "puppet:///modules/ruby/cap-fix-permissions",
     mode => 755
   }
 

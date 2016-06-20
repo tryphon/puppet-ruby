@@ -1,6 +1,6 @@
 define ruby::delayed_job::initd() {
   file { "/etc/init.d/$name":
-    source => "puppet:///ruby/delayed_job.init",
+    source => "puppet:///modules/ruby/delayed_job.init",
     mode => 755
   }
 
