@@ -121,3 +121,8 @@ class ruby::gem::postgresql::dependencies {
 class ruby::gem::capybara-webkit {
   package { 'libqtwebkit-dev': }
 }
+
+class ruby::gem::curl::dependencies {
+  package { 'libcurl4-openssl-dev': }
+}
+

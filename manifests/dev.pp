@@ -14,7 +14,7 @@ class ruby::dev::193 {
 
   package { "ruby1.9.1-dev":
     require => Apt::Sources_list["bearstech"],
-    alias => 'ruby-dev'
+    alias   => 'ruby-dev',
   }
 }
 
@@ -25,7 +25,6 @@ class ruby::dev::20 {
 
   package { "ruby2.0-dev":
     require => Apt::Sources_list["bearstech"],
-    alias => 'ruby-dev'
   }
 }
 
@@ -36,7 +35,6 @@ class ruby::dev::21 {
 
   package { "ruby2.1-dev":
     require => Apt::Sources_list["bearstech"],
-    alias => 'ruby-dev'
   }
 }
 
@@ -47,6 +45,5 @@ class ruby::dev::22 {
 
   package { "ruby2.2-dev":
     require => Apt::Sources_list["bearstech"],
-    alias => 'ruby-dev'
   }
 }
