@@ -92,6 +92,10 @@ class ruby::gem::rmagick::dependencies {
   package { libmagickwand-dev: }
 }
 
+class ruby::gem::curl::dependencies {
+  package { 'libcurl4-gnutls-dev': }
+}
+
 class ruby::gem::mysql::dependencies {
   include mysql::client
 
