@@ -97,7 +97,8 @@ define rails::application($server_name = false, $rails_version = '2.3.5', $mongo
     service { "sidekiq-$name":
       ensure => running,
       hasstatus => true,
-      require => File["/etc/init.d/sidekiq-$name"]
+      require => File["/etc/init.d/sidekiq-$name"],
+      subscribe => File["/etc/$name/environments/$environment.rb"]
     }
 
     if $environment != "production" {
