@@ -41,7 +41,7 @@ start_daemon() {
 }
 
 stop_daemon() {
-	  start-stop-daemon --stop --quiet --pidfile $PID_FILE
+	  start-stop-daemon --stop --retry=30 --quiet --pidfile $PID_FILE
 }
 
 case "$1" in

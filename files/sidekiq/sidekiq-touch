@@ -4,6 +4,4 @@
 application=$1
 
 init_script="/etc/init.d/sidekiq-$application"
-
-$init_script status && ($init_script stop;sleep 10) || true
-$init_script start
+$init_script restart
