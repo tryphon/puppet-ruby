@@ -1,59 +1,6 @@
-# class ruby::gems {
-#   include ruby::dev
-
-#   package { rubygems:
-#     ensure => latest
-#   }
-
-#   if $debian_lenny {
-#     include apt::tryphon
-#     Package[rubygems] {
-#       require => [Apt::Sources_list[tryphon], Apt::Preferences[rubygems]]
-#     }
-#     apt::preferences { rubygems:
-#       package => rubygems,
-#       pin => "release a=lenny-backports",
-#       priority => 999
-#     }
-#     apt::preferences { "rubygems18":
-#       package => "rubygems1.8",
-#       pin => "release a=lenny-backports",
-#       priority => 999
-#     }
-#   }
-#   include ruby::gemrc
-# }
-
-class ruby::gemrc {
-  file { "/etc/gemrc":
-    content => "gem: --no-rdoc --no-ri\n"
-  }
-}
-
 class ruby::gems {
   include ruby::dev
   include ruby::gemrc
-}
-
-class ruby::gems::20 {
-  include ruby::gemrc
-}
-
-class ruby::gems::21 {
-  include ruby::gemrc
-}
-
-class ruby::gems::22 {
-  include ruby::gemrc
-}
-
-class ruby::gem::fog::dependencies {
-  include ruby::gem::nokogiri::dependencies
-}
-
-class ruby::gem::nokogiri::dependencies {
-  package { [libxml2-dev, zlib1g-dev]: }
-  package { libxslt1-dev: }
 }
 
 class ruby::gem::sqlite3::dependencies {
@@ -84,7 +31,7 @@ class ruby::gem::proj4rb::dependencies {
   package { libproj-dev: }
 }
 
-class ruby::gem::ffi-proj4::dependencies {
+class ruby::gem::ffi_proj4::dependencies {
   package { 'libproj-dev': }
 }
 
@@ -122,7 +69,7 @@ class ruby::gem::postgresql::dependencies {
   package { 'libpq-dev': }
 }
 
-class ruby::gem::capybara-webkit {
+class ruby::gem::capybara_webkit {
   package { 'libqtwebkit-dev': }
 }
 

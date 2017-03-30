@@ -1,0 +1,7 @@
+#!/bin/sh -e
+# Simple wrapper for /etc/init.d/sneakers-* scripts
+
+application=$1
+
+init_script="/etc/init.d/sneakers-$application"
+$init_script restart

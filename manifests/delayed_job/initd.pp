@@ -1,7 +1,7 @@
 define ruby::delayed_job::initd() {
   file { "/etc/init.d/$name":
     source => "puppet:///modules/ruby/delayed_job.init",
-    mode => 755
+    mode => '0755'
   }
 
   exec { "insserv-$name":

@@ -12,7 +12,7 @@ class ruby::onrails($backend = 'apache2') {
 
   file { "/usr/local/bin/rails-console":
     source => "puppet:///modules/ruby/rails-console",
-    mode => 0755
+    mode => '0755'
   }
 
   sudo::user_line { "passenger-config":

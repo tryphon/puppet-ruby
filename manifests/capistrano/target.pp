@@ -4,7 +4,7 @@ class ruby::capistrano::target {
 
   file { "/usr/local/sbin/cap-fix-permissions":
     source => "puppet:///modules/ruby/cap-fix-permissions",
-    mode => 755
+    mode   => '0755'
   }
 
   sudo::user_line { "cap-fix-permissions":

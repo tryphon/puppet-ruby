@@ -1,4 +1,19 @@
-define rails::application($server_name = false, $rails_version = '2.3.5', $mongodb = false, $database = nil, $environment = "production", $ruby_version = false, $newrelic = false, $sidekiq = false, $secrets = false, $backend = 'apache2') {
+define rails::application(
+  $server_name   = false,
+  $rails_version = '2.3.5',
+  $mongodb       = false,
+  $mongoid_file  = '',
+  $database      = nil,
+  $database_file = ''
+  $environment   = 'production',
+  $env_file      = '',
+  $ruby_version  = false,
+  $newrelic      = false,
+  $newrelic_file = '',
+  $sidekiq       = false,
+  $secrets       = false,
+  $secrets_file  = '',
+  $backend       = 'apache2') {
   if $server_name {
     $site_name = regsubst($server_name, '\.', '_', 'G')
     case $backend {
@@ -24,12 +39,12 @@ define rails::application($server_name = false, $rails_version = '2.3.5', $mongo
 
   file { ["/var/www/$name", "/var/www/$name/shared", "/var/www/$name/shared/public"]:
     ensure => directory,
-    mode => 2775,
-    group => src
+    mode   => '2775',
+    group  => src
   }
   file { "/var/www/$name/shared/config":
     ensure => "/etc/$name",
-    force => true
+    force  => true
   }
 
   if ! defined(File["/etc/$name"]) {
@@ -42,8 +57,13 @@ define rails::application($server_name = false, $rails_version = '2.3.5', $mongo
     ensure => directory
   }
 
+  $env_source = $env_file? {
+    ''      => ["puppet:///files/$name/$environment.rb.$fqdn", "puppet:///files/$name/$environment.rb"],
+    default => $env_file
+  }
+
   file { "/etc/$name/environments/$environment.rb":
-    source => ["puppet:///files/$name/$environment.rb.$fqdn", "puppet:///files/$name/$environment.rb"],
+    source => $env_source,
     notify => Exec["restart-$name"]
   }
 
@@ -52,16 +72,24 @@ define rails::application($server_name = false, $rails_version = '2.3.5', $mongo
     target => "/etc/$name/environments/$environment.rb"
   }
 
+  $mongoid_source = $mongoid_file? {
+    ''      => ["puppet:///files/$name/mongoid.yml.$fqdn", "puppet:///files/$name/mongoid.yml.$environment", "puppet:///files/$name/mongoid.yml"],
+    default => $mongoid_file
+  }
   if $mongodb {
     file { "/etc/$name/mongoid.yml":
-      source => ["puppet:///files/$name/mongoid.yml.$fqdn", "puppet:///files/$name/mongoid.yml.$environment", "puppet:///files/$name/mongoid.yml"],
+      source => $mongoid_source,
       notify => Exec["restart-$name"]
     }
   }
 
+  $secrets_source = $secrets_file? {
+    ''      => ["puppet:///files/$name/secrets.yml.$fqdn", "puppet:///files/$name/secrets.yml.$environment", "puppet:///files/$name/secrets.yml"],
+    default => $secret_file
+  }
   if $secrets {
     file { "/etc/$name/secrets.yml":
-      source => ["puppet:///files/$name/secrets.yml.$fqdn", "puppet:///files/$name/secrets.yml.$environment", "puppet:///files/$name/secrets.yml"],
+      source => $secrets_source
       notify => Exec["restart-$name"]
     }
   }
@@ -72,30 +100,38 @@ define rails::application($server_name = false, $rails_version = '2.3.5', $mongo
     $real_database=$database
   }
 
+  $database_source = $database_file? {
+    ''      => ["puppet:///files/$name/database.yml.$fqdn", "puppet:///files/$name/database.yml.$environment", "puppet:///files/$name/database.yml"],
+    default => $database_file
+  }
   if $real_database {
     file { "/etc/$name/database.yml":
-      source => ["puppet:///files/$name/database.yml.$fqdn", "puppet:///files/$name/database.yml.$environment", "puppet:///files/$name/database.yml"],
+      source => $database_source,
       notify => Exec["restart-$name"]
     }
   }
 
+  $newrelic_source = $newrelic_file? {
+    ''      => ["puppet:///files/$name/newrelic.yml.$fqdn", "puppet:///files/$name/newrelic.yml.$environment", "puppet:///files/$name/newrelic.yml"],
+    default => $newrelic_file
+  }
   if $newrelic {
     file { "/etc/$name/newrelic.yml":
-      source => ["puppet:///files/$name/newrelic.yml.$fqdn", "puppet:///files/$name/newrelic.yml.$environment", "puppet:///files/$name/newrelic.yml"],
-      mode => 644,
+      source => $newrelic_source,
+      mode   => '0644',
       notify => Exec["restart-$name"]
     }
   }
 
   if $sidekiq {
     file { "/etc/init.d/sidekiq-$name":
-      source => "puppet:///modules/ruby/sidekiq/sidekiq.initd",
-      mode => 755,
+      source  => "puppet:///modules/ruby/sidekiq/sidekiq.initd",
+      mode    => '0755',
       require => File['/usr/local/bin/sidekiq-start']
     }
 
     service { "sidekiq-$name":
-      ensure => running,
+      ensure    => running,
       hasstatus => true,
       require => File["/etc/init.d/sidekiq-$name"],
       subscribe => File["/etc/$name/environments/$environment.rb"]
@@ -110,8 +146,8 @@ define rails::application($server_name = false, $rails_version = '2.3.5', $mongo
 
   exec { "restart-$name":
     refreshonly => true,
-    command => "touch /var/www/$name/current/tmp/restart.txt",
-    onlyif => "test -d /var/www/$name/current/tmp/"
+    command     => "touch /var/www/$name/current/tmp/restart.txt",
+    onlyif      => "test -d /var/www/$name/current/tmp/"
   }
 
 }
