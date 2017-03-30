@@ -133,7 +133,7 @@ define rails::application(
     service { "sidekiq-$name":
       ensure    => running,
       hasstatus => true,
-      require => File["/etc/init.d/sidekiq-$name"],
+      require   => File["/etc/init.d/sidekiq-$name"],
       subscribe => File["/etc/$name/environments/$environment.rb"]
     }
 
