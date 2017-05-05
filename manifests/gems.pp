@@ -35,6 +35,11 @@ class ruby::gem::ffi_proj4::dependencies {
   package { 'libproj-dev': }
 }
 
+class ruby::gem::rgeo::dependencies {
+  include ruby::gem::proj4rb::dependencies
+  package { 'libgeos-dev': }
+}
+
 class ruby::gem::rmagick::dependencies {
   package { libmagickwand-dev: }
 }
@@ -76,4 +81,3 @@ class ruby::gem::capybara_webkit {
 class ruby::gem::curl::dependencies {
   package { 'libcurl4-openssl-dev': }
 }
-
