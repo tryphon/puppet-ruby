@@ -46,6 +46,7 @@ class ruby::gem::rmagick::dependencies {
 
 class ruby::gem::curl::dependencies {
   package { 'libcurl4-gnutls-dev': }
+  package { 'libcurl4-openssl-dev': }
 }
 
 class ruby::gem::mysql::dependencies {
@@ -76,8 +77,4 @@ class ruby::gem::postgresql::dependencies {
 
 class ruby::gem::capybara_webkit {
   package { 'libqtwebkit-dev': }
-}
-
-class ruby::gem::curl::dependencies {
-  package { 'libcurl4-openssl-dev': }
 }
