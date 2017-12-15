@@ -4,7 +4,7 @@ define rails::application(
   $mongodb       = false,
   $mongoid_file  = '',
   $database      = nil,
-  $database_file = ''
+  $database_file = '',
   $environment   = 'production',
   $env_file      = '',
   $ruby_version  = false,
