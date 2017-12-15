@@ -11,4 +11,4 @@ cd $directory
 # Find bundle in application bin or script directory (which should select the perfect ruby version)
 export PATH=$PWD/bin:$PWD/script:$PATH
 
-bundle exec sidekiq -e $environment -P $pid_file 2>&1 | logger -t "sidekiq/$application"
+SIDEKIQ_REDIS_URL=redis://127.0.0.1:6379 bundle exec sidekiq -e $environment -P $pid_file 2>&1 | logger -t "sidekiq/$application"
